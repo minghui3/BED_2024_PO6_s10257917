@@ -71,12 +71,6 @@ class Book {
     
         return result.recordset[0]; // Convert rows to Book objects
     }
-    const sql = require("mssql");
-const dbConfig = require("../dbConfig");
-
-class Book {
-  // ... existing code for constructor and getBookById
-
   static async updateBook(id, newBookData) {
     const connection = await sql.connect(dbConfig);
 

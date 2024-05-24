@@ -1,15 +1,15 @@
 const express = require("express");
 const booksController = require("./controllers/booksController");
+const usersController = require("./controllers/usersController");
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 const bodyParser = require("body-parser"); // Import body-parser
+const validateBook = require("./middlewares/validateBook");
 
 const app = express();
 const port = 3000;
 const staticMiddleware = express.static("public"); // Path to the public folder
 // Include body-parser middleware to handle JSON data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data handling
 
@@ -20,6 +20,14 @@ app.get("/book-count", booksController.getBookCount);
 app.post("/books", validateBook, booksController.createBook); // POST for creating books (can handle JSON data)
 app.put("/books/:id", validateBook, booksController.updateBook);
 app.delete("/books/:id", booksController.deleteBook); // DELETE for deleting books
+
+app.post("/users", usersController.createUser); // Create user
+app.get("/users", usersController.getAllUsers); // Get all users
+app.get("/users/search", usersController.searchUsers);
+app.get("/users/with-books", usersController.getUsersWithBooks);
+app.get("/users/:id", usersController.getUserById); // Get user by ID
+app.put("/users/:id", usersController.updateUser); // Update user
+app.delete("/users/:id", usersController.deleteUser); // Delete user
 
 app.listen(port, async () => {
   try {
